@@ -1,0 +1,27 @@
+{
+  "name": "@sempera/mcp",
+  "version": "0.1.0",
+  "description": "A Model Context Protocol server (stdio) for the Sempera API: read agents, calls, conversations and numbers; optionally place calls and send texts",
+  "license": "MIT",
+  "author": "Sempera Labs, Inc. <hello@sempera.org>",
+  "homepage": "https://github.com/Sempera-AI/sempera-mcp#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/Sempera-AI/sempera-mcp.git" },
+  "bugs": { "url": "https://github.com/Sempera-AI/sempera-mcp/issues" },
+  "keywords": ["sempera", "mcp", "model-context-protocol", "voice", "phone", "ai"],
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "bin": { "sempera-mcp": "bin/sempera-mcp.js" },
+  "exports": { ".": "./src/server.js" },
+  "files": ["bin", "src", "README.md"],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.1.0"
+  },
+  "optionalDependencies": {
+    "keytar": "^7.9.0"
+  },
+  "publishConfig": { "access": "public" }
+}
