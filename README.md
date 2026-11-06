@@ -11,10 +11,10 @@ It calls the public API at `https://api.sempera.org` (contract: [`/openapi.json`
 Node.js 20 or newer.
 
 ```bash
-# From npm, once the package is published (MCP clients usually run it with npx, below)
+# From npm (MCP clients usually run it with npx, below)
 npm install -g @sempera/mcp
 
-# From source, today
+# From source
 git clone https://github.com/Sempera-AI/sempera-mcp.git
 cd sempera-mcp
 npm install
