@@ -4,7 +4,7 @@
 // global `fetch` of Node 20 or newer. Every route it calls is listed in the published OpenAPI document.
 
 export const DEFAULT_BASE_URL = "https://api.sempera.org";
-export const CLIENT_VERSION = "0.1.0";
+export const CLIENT_VERSION = "0.1.1";
 
 const RETRYABLE_STATUS = new Set([429, 502, 503, 504]);
 

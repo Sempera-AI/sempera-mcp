@@ -2,9 +2,29 @@
 
 [Documentation](https://docs.sempera.org) | [MCP guide](https://docs.sempera.org/mcp) | [OpenAPI document](https://api.sempera.org/openapi.json) | [MIT licence](LICENSE)
 
-`@sempera/mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server for the [Sempera](https://sempera.org) API. It runs on your machine over stdio and lets an AI assistant (Claude Desktop, Claude Code, Cursor, VS Code and other MCP clients) read your AI phone agents, calls, conversations and numbers, and, only if you turn it on, place a call or send a text.
+`@sempera/mcp` 0.1.1 is a [Model Context Protocol](https://modelcontextprotocol.io) server for the [Sempera](https://sempera.org) API. It runs on your machine over stdio and lets an AI assistant (Claude Desktop, Claude Code, Cursor, VS Code and other MCP clients) read your AI phone agents, calls, conversations and numbers, and, only if you turn it on, place a call or send a text.
 
 It calls the public API at `https://api.sempera.org` (contract: [`/openapi.json`](https://api.sempera.org/openapi.json)) with your workspace API key. Sempera also hosts an MCP endpoint at `https://api.sempera.org/v1/mcp` for clients that connect over HTTP; this package is the local, stdio alternative.
+
+## Install in your assistant
+
+Two connections. They do not offer the same tools.
+
+Hosted, for an assistant that speaks streamable HTTP:
+
+```
+https://api.sempera.org/v1/mcp
+```
+
+The endpoint answers one JSON body per POST and does not open an event stream. A host can sign in with OAuth: it registers itself, and PKCE with S256 is required. An OAuth grant can hold only `phone:read`, `phone:call` and `phone:text`. Phone tools need a Sempera Phone plan. Each call needs owner approval unless a standing approval covers that preview. A preview places no call. Read tools and builder tools are not on an OAuth grant. They need a bearer API key whose scopes allow them. The live tool list is what `tools/list` returns for that credential.
+
+On your machine, over stdio:
+
+```bash
+npx -y @sempera/mcp
+```
+
+Set `SEMPERA_API_KEY`, or use a key saved by `sempera login`. Read tools are always on. `send_call` and `send_sms` are off unless you pass `--allow-writes`. This package does not serve the hosted phone, read or builder tools. Client config for this package is under Configure your MCP client.
 
 ## Install
 
@@ -116,6 +136,18 @@ npx @modelcontextprotocol/inspector node bin/sempera-mcp.js   # try it by hand
 `src/client.js`, `src/webhooks.js` and `src/credentials.js` are shared with the Sempera CLI and kept identical to it.
 
 This repository is published from Sempera's main source tree; open issues and pull requests here and they are carried back.
+
+## MCP Registry release
+
+`server.json` lists `io.github.Sempera-AI/sempera` and pins the npm package version. The matching `mcpName` in `package.json` proves the npm package belongs to that listing. npm always includes `package.json`; the `files` list selects files, not fields. The packing test checks that the actual tarball keeps this metadata and `server.json`.
+
+Publish the npm package first. Then, from an account with Actions write access to this repository, run:
+
+```bash
+gh workflow run publish-mcp-registry.yml --repo Sempera-AI/sempera-mcp --ref main
+```
+
+The workflow is manual only. It installs the official `mcp-publisher` Linux amd64 release and uses GitHub OIDC to publish the listing. No repository secrets are needed. The workflow does not publish to npm.
 
 ## License
 

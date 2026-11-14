@@ -14,8 +14,8 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
-import { SemperaClient } from "../src/client.js";
-import { createServer } from "../src/server.js";
+import { CLIENT_VERSION, SemperaClient } from "../src/client.js";
+import { VERSION, createServer } from "../src/server.js";
 import { READ_TOOLS, WRITE_TOOLS } from "../src/tools.js";
 
 const KEY = "sempera_sk_test_0000";
@@ -261,6 +261,25 @@ describe("packaging", () => {
       }
       assert.equal(mine, theirs, `${name} differs from ../cli/src/${name}; copy the CLI's version`);
     }
+  });
+
+  test("the registry name and the two versions do not drift", async () => {
+    const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+    const server = JSON.parse(await readFile(new URL("../server.json", import.meta.url), "utf8"));
+    const lock = JSON.parse(await readFile(new URL("../package-lock.json", import.meta.url), "utf8"));
+    const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
+    assert.equal(pkg.mcpName, "io.github.Sempera-AI/sempera");
+    assert.equal(server.name, pkg.mcpName);
+    assert.equal(server.version, pkg.version);
+    assert.equal(server.packages[0].version, pkg.version);
+    assert.equal(server.packages[0].identifier, pkg.name);
+    assert.equal(lock.version, pkg.version);
+    assert.equal(lock.packages[""].version, pkg.version);
+    assert.equal(VERSION, pkg.version);
+    assert.equal(CLIENT_VERSION, pkg.version);
+    assert.ok(readme.includes(`\`@sempera/mcp\` ${pkg.version}`));
+    assert.equal(pkg.files.includes("server.json"), true);
+    await assert.rejects(readFile(new URL("../.npmignore", import.meta.url), "utf8"), { code: "ENOENT" });
   });
 
   test("the stdio binary serves tools/list and a read against a local HTTP server", async () => {
