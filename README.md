@@ -1,5 +1,7 @@
 # Sempera MCP server
 
+[![mcptry](https://mcptry.com/badge/io.github.Sempera-AI/sempera)](https://mcptry.com/servers/io.github.Sempera-AI/sempera)
+
 [Documentation](https://docs.sempera.org) | [MCP guide](https://docs.sempera.org/mcp) | [OpenAPI document](https://api.sempera.org/openapi.json) | [MIT licence](LICENSE)
 
 `@sempera/mcp` 0.1.1 is a [Model Context Protocol](https://modelcontextprotocol.io) server for the [Sempera](https://sempera.org) API. It runs on your machine over stdio and lets an AI assistant (Claude Desktop, Claude Code, Cursor, VS Code and other MCP clients) read your AI phone agents, calls, conversations and numbers, and, only if you turn it on, place a call or send a text.
